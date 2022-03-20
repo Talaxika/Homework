@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdarg.h>
+
+// Zadachata e nepulna, priema samo broi na vuvedenite integers i
+// smqta broq na edinicite na chisloto v binary
+
+// PRIMER  9, 8, 5 -> 1001, 1000, 0101
+// counter = 5 ->       2  + 1  +  2
+
+
+unsigned onesCount(unsigned count,...);
+
+
+int main(void){
+    int count;
+    /*int size;
+    */
+
+    int result = onesCount(2, 4, 9);
+    printf("%d\n", result);
+    
+    return 0;
+}
+
+unsigned onesCount(unsigned count,...){
+    unsigned int counter = 0;
+    va_list args;
+    va_start (args, count);
+    /*
+    for (int i = 0; i < count; i++)
+    {
+        int number = va_arg(args, int);
+        if (size < 1 || size > sizeof(int))
+        {
+            printf("Impossible size.");
+            return -1;
+        }
+        if (size != sizeof(number))
+        {
+            printf("Wrong size.");
+            return -1;
+        }        
+        
+    }*/
+    
+
+    for (int i = 0; i < count; i++)
+    {
+        int number = va_arg(args, int);
+        while (number) {
+        counter += number & 1;
+        number >>= 1;
+    }
+    }
+    va_end(args);
+    return counter;
+    
+}
