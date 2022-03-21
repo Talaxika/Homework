@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-// Zadachata e nepulna, priema samo broi na vuvedenite integers i
-// smqta broq na edinicite na chisloto v binary
 
-// PRIMER  9, 8, 5 -> 1001, 1000, 0101
-// counter = 5 ->       2  + 1  +  2
+//Zadachata e nepulna, nqma size
 
 
 unsigned onesCount(unsigned count,...);
