@@ -8,40 +8,59 @@ void printBits(unsigned n)
     }
     putchar('\n');
 }
+void printArr(uint32_t* maskArr, size_t nitems){
+    for (int i = 0; i < nitems; i++)
+    {
+        printBits(*(maskArr+i));
+    }
+    
+}
 
 int clearBit(uint32_t* maskArr, size_t nitems, size_t bit);
 int setBit(uint32_t* maskArr, size_t nitems, size_t bit);
 int checkBit(uint32_t* maskArr, size_t len, size_t bit);
 
 int main() {
-    uint32_t num = 17;
-    printBits(num);
-    if(checkBit(&num, 32, 0) == 1){
+    uint32_t arr[] = {10, 15, 17, 18};
+    printBits(arr);
+    if(checkBit(&arr, 4, 0) == 1){
         printf("Searched bit is one\n");
     }
-    clearBit(&num, 32, 0);
-    printBits(num);
-    setBit(&num, 32, 10);
-    printBits(num);
+    clearBit(&arr, 4, 0);
+    printArr(&arr, 4);
+    setBit(&arr, 4, 10);
+    
     
 
     return 0;
 }
 
 int clearBit(uint32_t* maskArr, size_t nitems, size_t bit){
-    return *maskArr &= ~(1<<bit);
-}
-int setBit(uint32_t* maskArr, size_t nitems, size_t bit){
-    return *maskArr |= (1<<bit);
-}
-int checkBit(uint32_t* maskArr, size_t len, size_t bit){
-    int a1 = (*maskArr >> bit) & 1;
-    if (a1 == 1)
+    for (int i = 0; i < nitems; i++)
     {
-        return 1;
-    }
-    else{
-        return 0;
+        *(maskArr+nitems) &= ~(1<<bit);
     }
     
+    return 0;
+}
+int setBit(uint32_t* maskArr, size_t nitems, size_t bit){
+    for (int i = 0; i < nitems; i++)
+    {
+        *maskArr |= (1<<bit);
+    }
+    return 0;
+}
+int checkBit(uint32_t* maskArr, size_t len, size_t bit){
+    for (int i = 0; i < len; i++)
+    {
+        int a1 = (*(maskArr+i) >> bit) & 1;
+        if (a1 == 1)
+    {
+        printf("maskArr[%d], bit number %d = 1", i, bit);
+    }
+    else{
+        printf("maskArr[%d], bit number %d = 0", i, bit);
+    }
+    }
+    return 0;
 }
