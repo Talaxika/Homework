@@ -12,4 +12,7 @@ int main() {
     uint32_t num;
     scanf("%d", &num);
     bin(num);
+    
+    
+    return 0;
 }
