@@ -11,21 +11,34 @@ void swapg(void *a, void* b, size_t size);
 void bubbleSort(void* arr, size_t n, size_t size, int (*comp)(const void*,const void*));
 
 
+void (*getSorting(char* fname))(void*,size_t,size_t,int(*)(const void*,const void*));
+
 int main() {
     
     int arr[COUNT] = {10, 15, 4, 16, 8, 30, 25, 1, 55, 43};
-
-    void (*getSorting[2])(void*,size_t,size_t,int(*)(const void*,const void*));
-    getSorting[0] = qsort;
-    getSorting[1] = bubbleSort;
-
-    getSorting[0](arr, COUNT, sizeof(int), compare); // qsort - increasing
+    getSorting("bubbleSort")(arr, COUNT, sizeof(int), compare);
     printArr(arr, COUNT);
-    getSorting[1](arr, COUNT, sizeof(int), compare); // bubblesort - decreasing
+    getSorting("qsort")(arr, COUNT, sizeof(int), compare);
     printArr(arr, COUNT);
 
 
     return 0;
+}
+
+void (*getSorting(char* fname))(void*,size_t,size_t,int(*)(const void*,const void*)){
+    if (fname == "qsort")
+    {
+        return qsort;
+    }
+    else if (fname == "bubbleSort")
+    {
+        return bubbleSort;
+    }
+    else{
+        return NULL;
+    }
+    
+    
 }
 
 void printArr(int* arr, int n){
