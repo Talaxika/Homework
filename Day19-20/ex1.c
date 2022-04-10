@@ -23,9 +23,8 @@ void* func(void* arg){
     printf("%s\n", str);
 }
 
-int main() {
-    int n;
-    scanf("%d", &n);
+int main(int argc, char* argv[]) {
+    int n = atoi(argv[1]);
     pthread_t threads[n];
 
 
