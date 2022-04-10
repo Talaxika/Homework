@@ -13,47 +13,56 @@ void swap(int *x, int *y)
 void *func(void *arg)
 {
     int i = 0, n = 0, min, index;
-    int arr[1000];
-    FILE *fp = fopen(arg, "r");
+    char* filename = (char*)arg;
+    FILE *fp = fopen(filename, "r");
+    int size = ftell(fp);
+    n = size/sizeof(int);
     if (NULL == fp)
     {
         perror("file open problem");
         exit(-1);
     }
+    int *arr = (int*) malloc(size);
 
-    while ((!feof(fp)) && n < 1000)
+    while ((!feof(fp)))
     {
-        fscanf(fp, "%d", &arr[n++]);
+        fread((arr+i), sizeof(int), 1, fp);
     }
 
     fclose(fp);
-    for (int i = 0; i < n - 1; i++)
-    {
-        min = i;
-        for (int j = i + 1; j < n; j++)
-        {
-            if (arr[j] < arr[min])
-            {
-                min = j;
-            }
-            swap(&arr[min], &arr[i]);
-        }
-    }
-    FILE *fpw = fopen(arg, "w");
     for (int i = 0; i < n; i++)
     {
-        fwrite(&arr[i], sizeof(int), sizeof(int), fp);
+        for (int j = i + 1; j < n; j++)
+        {
+            if (*(arr+j) > *(arr+min))
+            {
+                swap(&arr[min], &arr[i]);
+            }
+            
+        }
+    }
+    FILE *fpw = fopen(filename, "wb");
+    if (NULL == fpw)
+    {
+        perror("error fopen write");
+        exit(-1);
+    }
+    
+    for (int i = 0; i < n; i++)
+    {
+        fwrite((arr+i), sizeof(int), 1, fpw);
     }
     fclose(fpw);
+    free(arr);
 }
 
-int main(int argc, char **argv[])
+int main(int argc, char *argv[])
 {
-    pthread_t threads[argc];
+    pthread_t threads[argc-1];
 
-    for (int i = 1; i < argc-1; i++)
+    for (int i = 1; i < argc; i++)
     {
-        if (pthread_create(&threads[i], NULL, func, &argv[i]) != 0)
+        if (pthread_create(&threads[i], NULL, func, argv[i]) != 0)
         {
             perror("create thread problem");
             return EXIT_FAILURE;
